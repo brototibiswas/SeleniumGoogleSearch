@@ -47,11 +47,19 @@ public class Search {
 		sc.nextLine();
 	}
 	
-	
 
 	@Then("User is asked to enter a search query")
 	public void user_is_asked_to_enter_a_search_query() {
+		System.out.println("Write something to search in Google");
 		
+		searchTerm = sc.nextLine();
+		
+		while(searchTerm.equals("") && searchTerm.length() == 0) {
+			System.out.println("Invalid search. Try again");
+	        searchTerm = sc.nextLine();
+		}
+		
+		System.out.println("You have searched >> " + searchTerm);
 	}
 	
 	
