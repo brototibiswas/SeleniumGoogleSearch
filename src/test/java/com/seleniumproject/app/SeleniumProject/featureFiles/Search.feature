@@ -1,10 +1,9 @@
 Feature: Get the Title and Meta description from third url on result list
 	
-Scenario: Perform search in Google and open the third result
-	Given User opens the browser
-	When User navigates to “https://google.com”
-	And User types something in Google Search field
-	And User clicks on the Search button
-	Then Google will show a list of urls relevant to search query
-	Then User will open the third url from the result list in a new tab
-	Then User will close the tab and the browser
+Scenario: Perform search in Google and open the third result using user input
+	Given User is asked to choose a browser
+	Then User is asked to enter a search query
+	And The browser is opened and goes to “https://google.com”
+	And The query is typed Google Search field and search button is clicked
+	Then The 3rd result from result list is opened in a new tab
+ 
