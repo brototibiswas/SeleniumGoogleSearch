@@ -24,6 +24,8 @@ public class Search {
 	int browser;
 	String searchTerm;
 	String projectPath;
+	String title;
+	String meta;
 	
 	@Before 
 	public void setup() {
@@ -88,30 +90,47 @@ public class Search {
 
 	
 	@Then("The query is typed Google Search field and search button is clicked")
-	public void the_query_is_typed_google_search_field_and_search_button_is_clicked() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
-	}
-
-	
-	@Then("The 3rd result from result list is opened in a new tab")
-	public void the_3rd_result_from_result_list_is_opened_in_a_new_tab() throws InterruptedException {
+	public void the_query_is_typed_google_search_field_and_search_button_is_clicked() throws InterruptedException {
 		driver.findElement(By.name("q")).sendKeys(searchTerm);
 		Thread.sleep(2000);
 		driver.findElement(By.name("btnK")).click();
 	}
 
 	
+	@Then("The 3rd result from result list is opened in a new tab")
+	public void the_3rd_result_from_result_list_is_opened_in_a_new_tab() throws InterruptedException {
+//		Actions newTab = new Actions(driver); 
+		
+		// Link to open in new tab
+		WebElement result = driver.findElement(By.xpath("(//div[@class='r']/a)[2]"));
+		
+		// Open link in new tab
+		result.click();
+//		newTab.contextClick(result).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.RETURN).build().perform();
+
+	}
+
+	
 	@Then("The title and meta description from the page is copied")
 	public void the_title_and_meta_description_from_the_page_is_copied() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		// Get title
+		title = driver.getTitle();
+		System.out.println(title);
+		
+		// Get meta
+		meta = driver.findElement(By.xpath("//meta[@name='Description']")).getAttribute("content");
+		System.out.println(meta);
 	}
 
 	
 	@Then("The browser is closed")
-	public void the_browser_is_closed() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	public void the_browser_is_closed() throws InterruptedException {
+		Thread.sleep(2000);
+	    driver.close();
+	    driver.quit();
+	    
+	    System.out.println("Title = " + title );
+	    System.out.println("Description = " + meta );
 	}
+
 }
