@@ -3,6 +3,8 @@ package com.seleniumproject.app.SeleniumProject.stepsFiles;
 import java.util.Scanner;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -12,14 +14,13 @@ import io.cucumber.java.en.Then;
 public class Search {
 	WebDriver driver;
 	Scanner sc;
-	String browser;
+	int browser;
 	String searchTerm;
 	String projectPath;
 	
 	@Before 
 	public void setup() {
 		sc = new Scanner(System.in);
-		driver = null;
 		projectPath = System.getProperty("user.dir"); //stores location for project
 		System.out.println(projectPath);
 	}
@@ -28,20 +29,18 @@ public class Search {
 	@Given("User is asked to choose a browser")
 	public void user_is_asked_to_choose_a_browser() {
 		System.out.println("Choose a Browser. 1 for Google Chrome, 2 for Firefox");
-		int choice = sc.nextInt();
+		browser = sc.nextInt();
 		
-		while((choice != 1) && (choice != 2)) {
-			System.out.println("Invalid browser " + choice + " Try again");
-			choice = sc.nextInt();
+		while((browser != 1) && (browser != 2)) {
+			System.out.println("Invalid browser " + browser + " Try again");
+			browser = sc.nextInt();
 		}
 		
-		if(choice == 1) {
+		if(browser == 1) {
 			System.out.println("You have chosen Google Chrome");
-			browser = "chrome";
 		}
-		else if(choice == 2) {
+		else if(browser == 2) {
 			System.out.println("You have chosen Firefox");
-			browser = "firefox";
 		}
 		
 		sc.nextLine();
@@ -66,7 +65,19 @@ public class Search {
 
 	@And("The browser is opened and goes to “https:\\/\\/google.com”")
 	public void the_browser_is_opened_and_goes_to_https_google_com() {
+		System.out.println(projectPath);
 		
+		if(browser == 2) { 
+			System.setProperty("webdriver.gecko.driver","/Users/brototibiswas/Documents/learning code/projects/Java/SeleniumProject/drivers/geckodriver/geckodriver");
+			driver = new FirefoxDriver();
+		}
+		
+		else if(browser == 1) {
+			System.setProperty("webdriver.chrome.driver","/Users/brototibiswas/Documents/learning code/projects/Java/SeleniumProject/drivers/chromedriver/chromedriver");
+			driver = new ChromeDriver();
+		}
+		
+		driver.get("http://www.google.com");
 	}
 
 	
