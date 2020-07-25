@@ -2,6 +2,7 @@ package com.seleniumproject.app.SeleniumProject.stepsFiles;
 
 import java.util.Scanner;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -83,8 +84,10 @@ public class Search {
 	
 	
 	@And("The query is typed Google Search field and search button is clicked")
-	public void the_query_is_typed_google_search_field_and_search_button_is_clicked() {
-		
+	public void the_query_is_typed_google_search_field_and_search_button_is_clicked() throws InterruptedException {
+		driver.findElement(By.name("q")).sendKeys(searchTerm);
+		Thread.sleep(1500);
+		driver.findElement(By.name("btnK")).click();
 	}
 	
 	
