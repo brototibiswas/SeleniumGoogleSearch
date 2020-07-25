@@ -27,6 +27,24 @@ public class Search {
 	
 	@Given("User is asked to choose a browser")
 	public void user_is_asked_to_choose_a_browser() {
+		System.out.println("Choose a Browser. 1 for Google Chrome, 2 for Firefox");
+		int choice = sc.nextInt();
+		
+		while((choice != 1) && (choice != 2)) {
+			System.out.println("Invalid browser " + choice + " Try again");
+			choice = sc.nextInt();
+		}
+		
+		if(choice == 1) {
+			System.out.println("You have chosen Google Chrome");
+			browser = "chrome";
+		}
+		else if(choice == 2) {
+			System.out.println("You have chosen Firefox");
+			browser = "firefox";
+		}
+		
+		sc.nextLine();
 	}
 	
 	
