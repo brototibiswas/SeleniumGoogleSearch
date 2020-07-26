@@ -3,6 +3,7 @@ package com.seleniumproject.app.SeleniumProject.stepsFiles;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -10,8 +11,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.safari.SafariDriver.WindowType;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -94,19 +98,31 @@ public class Search {
 		driver.findElement(By.name("q")).sendKeys(searchTerm);
 		Thread.sleep(2000);
 		driver.findElement(By.name("btnK")).click();
+		Thread.sleep(2000);
 	}
 
 	
 	@Then("The 3rd result from result list is opened in a new tab")
 	public void the_3rd_result_from_result_list_is_opened_in_a_new_tab() throws InterruptedException {
-//		Actions newTab = new Actions(driver); 
+		Actions newTab = new Actions(driver); 
 		
 		// Link to open in new tab
 		WebElement result = driver.findElement(By.xpath("(//div[@class='r']/a)[2]"));
 		
-		// Open link in new tab
-		result.click();
-//		newTab.contextClick(result).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.ARROW_DOWN).sendKeys(Keys.RETURN).build().perform();
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		
+		wait.until(ExpectedConditions.elementToBeClickable(result));
+		
+		//open link in new tab - MacOS
+		newTab.keyDown(Keys.COMMAND)
+        .click(result)
+        .keyUp(Keys.COMMAND)
+        .build()
+        .perform();
+		
+		// Move to new window
+		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+		driver.switchTo().window(tabs.get(1));
 
 	}
 
