@@ -90,6 +90,7 @@ public class Search {
 		}
 		
 		driver.get("http://www.google.com");
+		driver.manage().window().maximize();
 	}
 
 	
@@ -141,8 +142,11 @@ public class Search {
 	
 	@Then("The browser is closed")
 	public void the_browser_is_closed() throws InterruptedException {
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 	    driver.close();
+	    
+	    Thread.sleep(2000);
+	   
 	    driver.quit();
 	    
 	    System.out.println("Title = " + title );
