@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -131,13 +132,22 @@ public class Search {
 	
 	@Then("The title and meta description from the page is copied")
 	public void the_title_and_meta_description_from_the_page_is_copied() {
+		//Wait for the new page to load and have meta information
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//title")));
+	
 		// Get title
 		title = driver.getTitle();
 		System.out.println(title);
 		
-		// Get meta
-		meta = driver.findElement(By.xpath("//meta[@name='Description']")).getAttribute("content");
-		System.out.println(meta);
+		// Get meta if exists
+		Boolean isPresent = driver.findElements(By.xpath("//meta[name='description']")).size() > 0;
+			
+		if(isPresent) {
+			System.out.println(driver.findElement(By.xpath("//meta[name='description']")).getAttribute("content"));
+		}
+		else {
+			System.out.println("Description is not provided");
+		}
 	}
 
 	
