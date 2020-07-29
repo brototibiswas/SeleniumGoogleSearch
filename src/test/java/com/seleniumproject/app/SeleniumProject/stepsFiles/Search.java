@@ -30,12 +30,13 @@ public class Search {
 	String projectPath;
 	String title;
 	String meta;
+	WebDriverWait wait;
 	
 	@Before 
 	public void setup() {
 		sc = new Scanner(System.in);
 		projectPath = System.getProperty("user.dir"); //stores location for project
-		System.out.println(projectPath);
+//		System.out.println(projectPath);
 	}
 	
 	
@@ -77,8 +78,6 @@ public class Search {
 	
 	@Then("The browser is opened and goes to “https:\\/\\/google.com”")
 	public void the_browser_is_opened_and_goes_to_https_google_com() {
-		System.out.println(projectPath);
-		
 		if(browser == 2) { 
 			System.setProperty("webdriver.gecko.driver","/Users/brototibiswas/Documents/learning code/projects/Java/SeleniumProject/drivers/geckodriver/geckodriver");
 			driver = new FirefoxDriver();
@@ -106,13 +105,14 @@ public class Search {
 	@Then("The 3rd result from result list is opened in a new tab")
 	public void the_3rd_result_from_result_list_is_opened_in_a_new_tab() throws InterruptedException {
 		Actions newTab = new Actions(driver); 
+		wait = new WebDriverWait(driver, 20);
 		
 		// Link to open in new tab
-		WebElement result = driver.findElement(By.xpath("(//div[@class='r']/a)[2]"));
+		WebElement result = driver.findElement(By.xpath("(//div[@class='g'])[2]/div[@class='rc']/div[@class='r']/a"));
 		
-		WebDriverWait wait = new WebDriverWait(driver, 20);
-		
-		wait.until(ExpectedConditions.elementToBeClickable(result));
+		wait.until(ExpectedConditions.visibilityOf(result));
+
+		newTab.moveToElement(result).perform();
 		
 		//open link in new tab - MacOS
 		newTab.keyDown(Keys.COMMAND)
@@ -120,6 +120,7 @@ public class Search {
         .keyUp(Keys.COMMAND)
         .build()
         .perform();
+		
 		
 		// Move to new window
 		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
