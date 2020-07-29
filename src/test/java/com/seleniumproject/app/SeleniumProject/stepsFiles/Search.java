@@ -96,9 +96,9 @@ public class Search {
 	
 	@Then("The query is typed Google Search field and search button is clicked")
 	public void the_query_is_typed_google_search_field_and_search_button_is_clicked() throws InterruptedException {
-		driver.findElement(By.name("q")).sendKeys(searchTerm);
+		driver.findElement(By.name("q")).sendKeys(searchTerm); 	//write the search query in searchbar
 		Thread.sleep(2000);
-		driver.findElement(By.name("btnK")).click();
+		driver.findElement(By.name("btnK")).click();	//click the "google search" button
 		Thread.sleep(2000);
 	}
 
@@ -106,13 +106,15 @@ public class Search {
 	@Then("The 3rd result from result list is opened in a new tab")
 	public void the_3rd_result_from_result_list_is_opened_in_a_new_tab() throws InterruptedException {
 		Actions newTab = new Actions(driver); 
-		wait = new WebDriverWait(driver, 20);
+		wait = new WebDriverWait(driver, 20); //initialize wait
 		
 		// Link to open in new tab
 		WebElement result = driver.findElement(By.xpath("(//div[@class='g'])[2]/div[@class='rc']/div[@class='r']/a"));
 		
+		//wait until the google result page is populated with results
 		wait.until(ExpectedConditions.visibilityOf(result));
 
+		//select the chosen element
 		newTab.moveToElement(result).perform();
 		
 		//open link in new tab - MacOS
@@ -139,27 +141,29 @@ public class Search {
 		title = driver.getTitle();
 		System.out.println(title);
 		
-		// Get meta if exists
+		// Get meta description if exists
 		Boolean isPresent = driver.findElements(By.xpath("//meta[name='description']")).size() > 0;
 			
 		if(isPresent) {
-			System.out.println(driver.findElement(By.xpath("//meta[name='description']")).getAttribute("content"));
+			meta = driver.findElement(By.xpath("//meta[name='description']")).getAttribute("content");
 		}
 		else {
-			System.out.println("Description is not provided");
+			meta = "* Description is not provided *";
 		}
 	}
 
 	
 	@Then("The browser is closed")
 	public void the_browser_is_closed() throws InterruptedException {
+		//close the current tab
 		Thread.sleep(1000);
 	    driver.close();
 	    
+	    //close the browser
 	    Thread.sleep(2000);
-	   
 	    driver.quit();
 	    
+	    //print the title and meta
 	    System.out.println("Title = " + title );
 	    System.out.println("Description = " + meta );
 	}
