@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -108,15 +109,31 @@ public class Search {
 		Actions newTab = new Actions(driver); 
 		wait = new WebDriverWait(driver, 20); //initialize wait
 		
-		// Link to open in new tab
-		WebElement result = driver.findElement(By.xpath("(//div[@class='g'])[2]/div[@class='rc']/div[@class='r']/a"));
-		
 		//wait until the google result page is populated with results
-		wait.until(ExpectedConditions.visibilityOf(result));
-
-		//select the chosen element
-		newTab.moveToElement(result).perform();
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.id("rso")));
 		
+		// Link to open in new tab
+//		WebElement result = driver.findElement(By.xpath("(//div[@class='rc'])[3]/div[@class='r']/a"));
+		WebElement result = driver.findElement(By.xpath("//div[@class='g'][3]/div[contains(@class,'rc')]/div[@class='r']/a"));
+
+		//MOVE TO the chosen element
+		newTab.moveToElement(result).perform();
+//		wait.until(ExpectedConditions.visibilityOf(result));
+
+		//SCROLL DOWN the page till the element is found using script		
+//		JavascriptExecutor js = (JavascriptExecutor) driver;
+//        js.executeScript("arguments[0].scrollIntoView(false);", result);
+        
+		//NOT WORKING
+//        wait.until(ExpectedConditions.elementToBeClickable(result));
+        
+        //ARROW DOWN to scroll to element
+//        result.sendKeys(Keys.ARROW_DOWN);
+		
+		System.out.println("Page height: "+driver.manage().window().getSize().getHeight());
+		System.out.println("Result height: "+result.getLocation().getY());
+		System.out.println("Result name: "+result.getText());
+ 
 		//open link in new tab - MacOS
 		newTab.keyDown(Keys.COMMAND)
         .click(result)
@@ -124,11 +141,15 @@ public class Search {
         .build()
         .perform();
 		
+		System.out.println("Windows: "+driver.getWindowHandles().size());
 		
-		// Move to new window
-		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-		driver.switchTo().window(tabs.get(1));
-
+		if(driver.getWindowHandles().size() > 1) {
+			// Move to new window
+			ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+			driver.switchTo().window(tabs.get(1));
+		}
+		else driver.quit();
+		
 	}
 
 	
