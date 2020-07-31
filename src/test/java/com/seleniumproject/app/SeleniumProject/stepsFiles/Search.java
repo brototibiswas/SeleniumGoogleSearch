@@ -113,7 +113,6 @@ public class Search {
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.id("rso")));
 		
 		// Link to open in new tab
-//		WebElement result = driver.findElement(By.xpath("(//div[@class='rc'])[3]/div[@class='r']/a"));
 		WebElement result = driver.findElement(By.xpath("//div[@class='g'][3]/div[contains(@class,'rc')]/div[@class='r']/a"));
 
 		//MOVE TO the chosen element
@@ -122,7 +121,7 @@ public class Search {
 
 		//SCROLL DOWN the page till the element is found using script		
 //		JavascriptExecutor js = (JavascriptExecutor) driver;
-//        js.executeScript("arguments[0].scrollIntoView(false);", result);
+//      js.executeScript("arguments[0].scrollIntoView(false);", result);
         
 		//NOT WORKING
 //        wait.until(ExpectedConditions.elementToBeClickable(result));
@@ -135,24 +134,51 @@ public class Search {
 		System.out.println("Result name: "+result.getText());
  
 		//open link in new tab - MacOS
-		newTab.keyDown(Keys.COMMAND)
-        .click(result)
-        .keyUp(Keys.COMMAND)
-        .build()
-        .perform();
-		
+		openInNewTab(newTab,result);
+	
 		System.out.println("Windows: "+driver.getWindowHandles().size());
 		
-		if(driver.getWindowHandles().size() > 1) {
+//		if(driver.getWindowHandles().size() > 1) {
 			// Move to new window
 			ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(tabs.get(1));
-		}
-		else driver.quit();
+//		}
+//		else driver.quit();
 		
 	}
-
 	
+
+	/**
+	 * Open link in new tab using keyboard. 
+	 * Specify Control/Command keys based on Operating System
+	 * For Mac -> Command
+	 * For Windows and Linux or others -> Control
+	 * @param newTab
+	 * @param result
+	 */
+	private void openInNewTab(Actions newTab, WebElement result) {
+		//Get OS name.
+		String OS = System.getProperty("os.name").toLowerCase();
+		
+		//for mac
+		if(OS.contains("mac")) {
+			newTab.keyDown(Keys.COMMAND)
+	        .click(result)
+	        .keyUp(Keys.COMMAND)
+	        .build()
+	        .perform();
+		}
+		//for windows and linux
+		else {
+			newTab.keyDown(Keys.CONTROL)
+	        .click(result)
+	        .keyUp(Keys.CONTROL)
+	        .build()
+	        .perform();
+		}
+	}
+
+
 	@Then("The title and meta description from the page is copied")
 	public void the_title_and_meta_description_from_the_page_is_copied() {
 		//Wait for the new page to load and have meta information
