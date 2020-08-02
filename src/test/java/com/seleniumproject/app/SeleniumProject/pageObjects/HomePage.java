@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
-public class HomePage{
+public class HomePage {
 	public WebDriver driver;
 	private WebDriverWait wait;
 	private String searchTerm;
@@ -18,8 +18,7 @@ public class HomePage{
 	
 	@FindBy(name = "btnK")
 	private WebElement searchBtn;
-	
-	
+
 	public HomePage(WebDriver driver, WebDriverWait wait) {
 		this.driver = driver;
 		this.wait = wait;
@@ -28,6 +27,7 @@ public class HomePage{
 		//This initElements method will create all WebElements
         PageFactory.initElements(driver, this);
 	}
+	
 	
 	public void navigate(String url) {
 		driver.get(url);

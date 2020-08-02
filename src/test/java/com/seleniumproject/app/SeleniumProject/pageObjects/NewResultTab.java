@@ -27,11 +27,20 @@ public class NewResultTab{
 
 	public String getMeta() {
 		String meta;
+		String metaLocator = "";
+		Boolean isPresent = false;
 		
-		Boolean isPresent = driver.findElements(By.xpath("//meta[name='description']")).size() > 0;
+		if(driver.findElements(By.xpath("//meta[name='description']")).size() > 0){
+			metaLocator = "//meta[name='description']";
+			isPresent = true;
+		}
+		else if(driver.findElements(By.xpath("//meta[property='og:description']")).size() > 0) {
+			metaLocator = "//meta[property='og:description']";
+			isPresent = true;
+		}
 		
 		if(isPresent) {
-			meta = driver.findElement(By.xpath("//meta[name='description']")).getAttribute("content");
+			meta = driver.findElement(By.xpath(metaLocator)).getAttribute("content");
 		}
 		else {
 			meta = "* Description is not provided *";

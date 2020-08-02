@@ -12,6 +12,7 @@ import com.seleniumproject.app.SeleniumProject.pageObjects.SearchResultPage;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
@@ -72,7 +73,7 @@ public class SearchSteps extends Base{
 	}
 
 	
-	@Then("The browser is opened and goes to “https:\\/\\/google.com”")
+	@And("The browser is opened and goes to “https:\\/\\/google.com”")
 	public void the_browser_is_opened_and_goes_to_https_google_com() {
 		driver = setDriver(browser);
 		wait = setWait();
@@ -83,13 +84,13 @@ public class SearchSteps extends Base{
 	}
 
 	
-	@Then("The query is typed Google Search field and search button is clicked")
+	@And("The query is typed Google Search field and search button is clicked")
 	public void the_query_is_typed_google_search_field_and_search_button_is_clicked() throws InterruptedException {
 		homepage.searchOnGoogle(searchTerm);
 	}
 
 	
-	@Then("The 3rd result from result list is opened in a new tab")
+	@And("The 3rd result from result list is opened in a new tab")
 	public void the_3rd_result_from_result_list_is_opened_in_a_new_tab() throws InterruptedException {
 		resultpage.openThirdResult();
 	}
@@ -100,16 +101,11 @@ public class SearchSteps extends Base{
 		title = resultTab.getTitle();
 		meta = resultTab.getMeta();
 	}
-
-	
-	@Then("The browser is closed")
-	public void the_browser_is_closed() throws InterruptedException {
-		quit();
-	}
 	
 	
 	@After
-	public void tearDown() {
+	public void tearDown() throws InterruptedException {
+		quit();
 		//print the title and meta
 	    System.out.println("Title = " + title );
 	    System.out.println("Description = " + meta );
